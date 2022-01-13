@@ -1,0 +1,23 @@
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: error-pages
+  namespace: default
+  labels:
+    io.kompose.service: error-pages
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: HostRegexp(`{host:.+}`)
+      kind: Rule
+      middlewares:
+        - name: error-pages-middleware
+      services:
+        - name: error-pages
+          port: 8080
+          kind: Service
+  tls:
+    {}
+    ## Note don-put certResolver here
